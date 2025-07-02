@@ -55,13 +55,4 @@ export const updateContact = async (id, data) => {
   await updateContacts(contacts);
 
   return contacts[idx];
-  // const newContact = {
-  //   id: nanoid(),
-  //   name,
-  //   email,
-  //   phone,
-  // };
-  // contacts.push(newContact);
-
-  // return newContact;
 };

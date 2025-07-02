@@ -50,10 +50,3 @@ export default {
   updateContact: ctrlWrapper(updateContact),
   deleteContact: ctrlWrapper(deleteContact),
 };
-// export default {
-//   getAllContactsController: ctrlWrapper(getAllContacts),
-//   getOneContactController: ctrlWrapper(getOneContact),
-//   createContactController: ctrlWrapper(createContact),
-//   updateContactController: ctrlWrapper(updateContact),
-//   deleteContactController: ctrlWrapper(deleteContact),
-// };

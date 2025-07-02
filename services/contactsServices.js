@@ -31,22 +31,18 @@ export const removeContact = async (contactId) => {
   return result;
 };
 
-export const addContact = async (name, email, phone) => {
+export const addContact = async (data) => {
   const contacts = await listContacts();
   const newContact = {
     id: nanoid(),
-    name,
-    email,
-    phone,
+    ...data,
   };
   contacts.push(newContact);
   await updateContacts(contacts);
-
   return newContact;
 };
 
 export const updateContact = async (id, data) => {
-  console.log(data);
   const contacts = await listContacts();
 
   const idx = contacts.findIndex((item) => item.id === id);

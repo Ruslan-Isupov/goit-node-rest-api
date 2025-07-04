@@ -2,8 +2,6 @@ import { DataTypes } from "sequelize";
 
 import sequelize from "./sequelize.js";
 
-// import { typeList, releaseYearMinValue } from "../constants/movies.js";
-
 const Contact = sequelize.define("contact", {
   name: {
     type: DataTypes.STRING,

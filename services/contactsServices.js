@@ -1,54 +1,43 @@
 import fs from "fs/promises";
 import path from "path";
-import { nanoid } from "nanoid";
+// import { nanoid } from "nanoid";
+
+import Contact from "../db/Contact.js";
+import { where } from "sequelize";
 
 const contactsPath = path.resolve("db", "contacts.json");
 
-const updateContacts = (contacts) =>
-  fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
+// const updateContacts = (contacts) =>
+//   fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
 
-export const listContacts = async () => {
-  const data = await fs.readFile(contactsPath);
-  return JSON.parse(data);
+export const listContacts = () => Contact.findAll();
+
+export const getContactById = (id) => Contact.findByPk(id);
+
+export const removeContact = async (id) => {
+  const contact = await getContactById(id);
+  if (!contact) return null;
+
+  await contact.destroy();
+  return contact;
 };
 
-export const getContactById = async (contactId) => {
-  const contacts = await listContacts();
-  const result = contacts.find((item) => item.id === contactId);
-  return result || null;
-};
-
-export const removeContact = async (contactId) => {
-  const contacts = await listContacts();
-  const index = contacts.findIndex((item) => item.id === contactId);
-  if (index === -1) {
-    return null;
-  }
-
-  const [result] = contacts.splice(index, 1);
-  await updateContacts(contacts);
-
-  return result;
-};
-
-export const addContact = async (data) => {
-  const contacts = await listContacts();
-  const newContact = {
-    id: nanoid(),
-    ...data,
-  };
-  contacts.push(newContact);
-  await updateContacts(contacts);
-  return newContact;
-};
+export const addContact = (payload) => Contact.create(payload);
 
 export const updateContact = async (id, data) => {
-  const contacts = await listContacts();
+  const contact = await getContactById(id);
+  if (!contact) return null;
 
-  const idx = contacts.findIndex((item) => item.id === id);
-  if (idx === -1) return null;
-  contacts[idx] = { ...contacts[idx], ...data };
-  await updateContacts(contacts);
+  await contact.update(data);
+  return contact;
+};
 
-  return contacts[idx];
+export const updateStatusContact = async (id, { favorite }) => {
+  const contact = await getContactById(id);
+  // if (!contact) {
+  //   throw HttpError(404, "Not found");
+  // }
+  if (!contact) return null;
+  await contact.update({ favorite });
+  return contact;
 };

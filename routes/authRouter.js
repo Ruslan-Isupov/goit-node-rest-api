@@ -7,7 +7,7 @@ import validateBody from "../helpers/validateBody.js";
 import { authRegisterSchema, authLoginSchema } from "../schemas/authSchemas.js";
 
 import authenticate from "../middlewares/authenticate.js";
-
+import upload from "../middlewares/upload.js";
 const authRouter = express.Router();
 
 authRouter.post(
@@ -25,5 +25,11 @@ authRouter.post(
 authRouter.get("/current", authenticate, authControllers.getCurrentController);
 
 authRouter.post("/logout", authenticate, authControllers.logoutController);
+authRouter.patch(
+  "/avatars",
+  authenticate,
+  upload.single("avatar"),
+  authControllers.updateAvatar
+);
 
 export default authRouter;

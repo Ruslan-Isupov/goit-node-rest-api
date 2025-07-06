@@ -38,9 +38,18 @@ export const logoutController = async (req, res) => {
   res.status(204).end();
 };
 
+export const updateAvatar = async (req, res) => {
+  const { id } = req.user;
+  const avatarURL = await authServices.updateAvatar(id, req.file);
+  res.status(200).json({
+    avatarURL,
+  });
+};
+
 export default {
   registerController: ctrlWrapper(registerController),
   loginController: ctrlWrapper(loginController),
   getCurrentController: ctrlWrapper(getCurrentController),
   logoutController: ctrlWrapper(logoutController),
+  updateAvatar: ctrlWrapper(updateAvatar),
 };

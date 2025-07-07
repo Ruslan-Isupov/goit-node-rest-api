@@ -9,6 +9,7 @@ const registerController = async (req, res) => {
     user: {
       email: newUser.email,
       subscription: newUser.subscription,
+      avatarURL: newUser.avatarURL,
     },
   });
 };
@@ -24,12 +25,13 @@ export const loginController = async (req, res) => {
   });
 };
 export const getCurrentController = async (req, res) => {
-  const { email, id, subscription } = req.user;
+  const { email, id, subscription, avatarURL } = req.user;
   const contacts = await listContacts({ owner: id });
 
   res.status(200).json({
     email,
     subscription,
+    avatarURL,
   });
 };
 

@@ -56,7 +56,7 @@ const verifyController = async (req, res) => {
   await authServices.verifyUser(verificationToken);
 
   res.json({
-    message: "User verified",
+    message: "Verification successful",
   });
 };
 
@@ -64,7 +64,7 @@ const resendVerifyController = async (req, res) => {
   await authServices.resendVerifyUser(req.body.email);
 
   res.json({
-    message: "Verify email resend",
+    message: "Verify email sent",
   });
 };
 export default {

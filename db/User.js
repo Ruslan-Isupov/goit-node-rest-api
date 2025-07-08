@@ -40,6 +40,6 @@ const User = sequelize.define("user", {
     type: DataTypes.STRING,
   },
 });
-User.sync({ force: true });
+User.sync();
 
 export default User;

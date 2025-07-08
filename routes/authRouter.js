@@ -4,7 +4,11 @@ import authControllers from "../controllers/authControllers.js";
 
 import validateBody from "../helpers/validateBody.js";
 
-import { authRegisterSchema, authLoginSchema } from "../schemas/authSchemas.js";
+import {
+  authRegisterSchema,
+  authLoginSchema,
+  authEmailSchema,
+} from "../schemas/authSchemas.js";
 
 import authenticate from "../middlewares/authenticate.js";
 import upload from "../middlewares/upload.js";
@@ -21,7 +25,13 @@ authRouter.post(
   validateBody(authLoginSchema),
   authControllers.loginController
 );
+authRouter.get("/verify/:verificationToken", authControllers.verifyController);
 
+authRouter.post(
+  "/verify",
+  validateBody(authEmailSchema),
+  authControllers.resendVerifyController
+);
 authRouter.get("/current", authenticate, authControllers.getCurrentController);
 
 authRouter.post("/logout", authenticate, authControllers.logoutController);

@@ -16,6 +16,7 @@ const registerController = async (req, res) => {
 
 export const loginController = async (req, res) => {
   const newUser = await authServices.loginUser(req.body);
+
   res.status(201).json({
     token: newUser.token,
     user: {
@@ -24,6 +25,7 @@ export const loginController = async (req, res) => {
     },
   });
 };
+
 export const getCurrentController = async (req, res) => {
   const { email, id, subscription, avatarURL } = req.user;
   const contacts = await listContacts({ owner: id });
@@ -43,14 +45,33 @@ export const logoutController = async (req, res) => {
 export const updateAvatar = async (req, res) => {
   const { id } = req.user;
   const avatarURL = await authServices.updateAvatar(id, req.file);
+
   res.status(200).json({
     avatarURL,
   });
 };
 
+const verifyController = async (req, res) => {
+  const { verificationToken } = req.params;
+  await authServices.verifyUser(verificationToken);
+
+  res.json({
+    message: "User verified",
+  });
+};
+
+const resendVerifyController = async (req, res) => {
+  await authServices.resendVerifyUser(req.body.email);
+
+  res.json({
+    message: "Verify email resend",
+  });
+};
 export default {
   registerController: ctrlWrapper(registerController),
   loginController: ctrlWrapper(loginController),
+  verifyController: ctrlWrapper(verifyController),
+  resendVerifyController: ctrlWrapper(resendVerifyController),
   getCurrentController: ctrlWrapper(getCurrentController),
   logoutController: ctrlWrapper(logoutController),
   updateAvatar: ctrlWrapper(updateAvatar),
